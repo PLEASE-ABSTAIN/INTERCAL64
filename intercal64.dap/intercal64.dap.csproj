@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>intercal64-dap</AssemblyName>
     <RootNamespace>INTERCAL.Dap</RootNamespace>
-    <Version>2.0.0</Version>
+    <Version>2.0.2</Version>
     <Product>intercal64</Product>
     <Description>INTERCAL-64 debugger</Description>
     <Copyright>Authorship disclaimed by Jason Whittington 2026. All rights reserved.</Copyright>
