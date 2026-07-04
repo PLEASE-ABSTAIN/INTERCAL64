@@ -5,14 +5,14 @@
 class Intercal64 < Formula
   desc "INTERCAL-64 — a 64-bit INTERCAL compiler and runtime"
   homepage "https://github.com/PLEASE-ABSTAIN/INTERCAL64"
-  version "2.0.0"
+  version "2.0.3"
 
   if Hardware::CPU.arm?
-    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-arm64.tar.gz"
-    sha256 "PLACEHOLDER_ARM64_SHA256"
+    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.3/intercal64-v2.0.3-osx-arm64.tar.gz"
+    sha256 "a382655b8857b0d24f95273cd846c0f024650f4744829c46cd7810000e941c12"
   else
-    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-x64.tar.gz"
-    sha256 "PLACEHOLDER_X64_SHA256"
+    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.3/intercal64-v2.0.3-osx-x64.tar.gz"
+    sha256 "54b22ae0ef5da13c12a9e31267d42de5f392ab575073cfc229a0ff1f621450ec"
   end
 
   def install
