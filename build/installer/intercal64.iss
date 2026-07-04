@@ -27,6 +27,8 @@ Root: HKCU; Subkey: "Environment"; ValueType: expandsz; ValueName: "Path"; Value
 Filename: "cmd.exe"; Parameters: "/c copy ""{app}\lib\intercal64.runtime.dll"" ""{app}\bin\"" >nul 2>&1"; Flags: runhidden
 Filename: "cmd.exe"; Parameters: "/c copy ""{app}\lib\syslib64.dll"" ""{app}\bin\"" >nul 2>&1"; Flags: runhidden
 Filename: "{code:GetVsCodePath}"; Parameters: "--install-extension ""{app}\intercal64-v{#AppVersion}.vsix"""; Flags: runhidden nowait; Check: VsCodeFound; StatusMsg: "Installing VS Code extension..."
+Filename: "https://discord.gg/3jQYdBvUwz"; Description: "Join the INTERCAL Discord — tell us if it worked (or didn't)"; Flags: postinstall shellexec nowait skipifsilent
+Filename: "https://github.com/PLEASE-ABSTAIN/INTERCAL64"; Description: "Star the project / report bugs on GitHub"; Flags: postinstall shellexec nowait skipifsilent unchecked
 
 [Code]
 var

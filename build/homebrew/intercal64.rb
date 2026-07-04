@@ -48,6 +48,9 @@ class Intercal64 < Formula
         cd #{share}/intercal64/samples
         churn hello.i
         ./hello
+
+      Questions, bugs, or did it actually work? Tell us on Discord:
+        https://discord.gg/3jQYdBvUwz
     EOS
   end
 
