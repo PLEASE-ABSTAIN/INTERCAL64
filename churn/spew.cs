@@ -211,7 +211,7 @@ namespace INTERCAL
             csproj.AppendLine("<Project Sdk=\"Microsoft.NET.Sdk\">");
             csproj.AppendLine("  <PropertyGroup>");
             csproj.AppendLine("    <OutputType>" + outputType + "</OutputType>");
-            csproj.AppendLine("    <TargetFramework>net9.0</TargetFramework>");
+            csproj.AppendLine("    <TargetFramework>net10.0</TargetFramework>");
             csproj.AppendLine("    <AssemblyName>" + c.assemblyName + "</AssemblyName>");
             csproj.AppendLine("    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>");
             if (c.debugBuild || c.debugDap)

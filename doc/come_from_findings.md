@@ -328,7 +328,7 @@ Three factors conspired to make this pattern difficult to discover:
 
 ### Bug 1: RESUME #0 treated as no-op
 
-**Location:** `cringe/confuse.cs` lines 567, 769
+**Location:** `churn/confuse.cs` lines 567, 769
 **Code:** `while (_popped < depth && _nextStack.Count > 0) { ... }`
 **Effect:** When depth=0, loop body never executes, RESUME silently does nothing
 **Correct behavior:** E621 (per C-INTERCAL)
@@ -336,7 +336,7 @@ Three factors conspired to make this pattern difficult to discover:
 
 ### Bug 2: FORGET on empty stack silently ignored
 
-**Location:** `cringe/confuse.cs` line 742
+**Location:** `churn/confuse.cs` line 742
 **Code:** `for (int _i = 0; _i < _n && _nextStack.Count > 0; _i++) _nextStack.Pop();`
 **Effect:** When stack is empty, FORGET silently does nothing
 **Status:** Needs investigation — beer.i may depend on this behavior at `(999) DO FORGET #1`

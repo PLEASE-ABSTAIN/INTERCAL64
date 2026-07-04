@@ -1,123 +1,78 @@
-# INTERCAL for Visual Studio Code
+# INTERCAL64
 
-Syntax highlighting and source-level debugging for INTERCAL, the Computer Language with No Pronounceable Acronym.
+**IDE support for INTERCAL and INTERCAL64.**
 
-## Installation
+INTERCAL64 extends the classic 1972 language to 64-bit arithmetic while remaining fully backwards compatible with programs written for INTERCAL-72. This extension brings both dialects into Visual Studio Code, including the first interactive debugger ever built for INTERCAL.
 
-### Syntax Highlighting
+![INTERCAL64 debugger stopped on a breakpoint in Visual Studio Code](https://please-abstain.github.io/INTERCAL/intercal64-hero2.png)
 
-Copy the `vscode-intercal` folder to your VS Code extensions directory:
+> 💬 **Questions, code to share, or complaints about the syntax?** [Join the Discord.](https://discord.gg/3jQYdBvUwz)
 
-```
-cp -r vscode-intercal ~/.vscode/extensions/intercal
-```
+## Syntax highlighting
 
-Reload VS Code. Files with the `.i` extension will get INTERCAL syntax highlighting.
+Full grammar for `.i` and `.ic64` files, covering both dialects:
 
-### Debugging
+- **Statements** — `DO`, `PLEASE`, `NOT`, `COME FROM`, `READ OUT`, `WRITE IN`, `GIVE UP`, `ABSTAIN`, `REINSTATE`, `IGNORE`, `REMEMBER`, `STASH`, `RETRIEVE`, and the rest.
+- **Operators** — `$` (mingle), `~` (select), `&` (AND), `V` (OR), `?` (XOR), `|` (rotate), `-` (flip).
+- **Variables** — spots (`.1`), two-spots (`:1`), and the 64-bit four-spots (`::1`), plus arrays (`,1`, `;1`, `;;1`).
+- **Constants** — the mesh prefixes `#` (16-bit), `##` (32-bit), and `####` (64-bit).
+- **Labels and gerunds**, with splatted (`*`) statements flagged as errors.
 
-1. Install the **C# Dev Kit** extension from the VS Code marketplace.
-2. The `.vscode/` folder in the project root contains `launch.json`, `tasks.json`, and `settings.json` preconfigured for INTERCAL debugging.
+Syntax highlighting works on its own — no compiler or runtime required.
 
-## Syntax Highlighting
+## Snippets
 
-Open any `.i` file. The extension highlights:
-
-- **Keywords**: `DO`, `PLEASE`, `NOT`, `GIVE UP`, `READ OUT`, `WRITE IN`, `COME FROM`, etc.
-- **Operators**: `$` (mingle), `~` (select), `&` (AND), `?` (XOR), `V`/`v` (OR), `|` (rotate), `-` (flip)
-- **Variables**: `.1` (spot), `:1` (two-spot), `::1` (four-spot), `,1` (tail), `;1` (hybrid), `;;1` (double-hybrid), `[]1` (box)
-- **Constants**: `#1` (16-bit), `##1` (32-bit), `####1` (64-bit)
-- **Labels**: `(100)`, `(4920558940556964150)`, etc.
-- **Gerunds**: NEXTING, CALCULATING, BOXING, FEEDING, PETTING, etc.
-- **Splatted statements** highlighted as errors
+Ready-made snippets for common INTERCAL idioms, including the double-NEXT trampoline and launch scaffolding.
 
 ## Debugging
 
-### Getting Started
+Open any `.i` or `.ic64` file, set a breakpoint in the gutter, and press **F5**. The debugger speaks the Debug Adapter Protocol and gives you:
 
-1. Open an `.i` file (e.g., `samples/collatz.i`).
-2. Set breakpoints by clicking the gutter.
-3. Press **F5** to compile, build, and launch under the debugger.
-4. The program runs in the **Terminal** tab — type input there when prompted by `WRITE IN`.
+- **Breakpoints** on any INTERCAL statement.
+- **Stepping** — Step Over, Step Into, and Continue. Step Into follows execution into a local `DO (label) NEXT`.
+- **Variables panel** — your spots, two-spots, and four-spots appear as first-class locals, updated after each statement. (Array variables such as `,1` and `;1` are not shown in the Variables panel — inspect them from the Debug Console.)
+- **Watch and Debug Console** — evaluate arbitrary **INTERCAL** expressions (selects, mingles, unary bit ops) against live program state. The console speaks INTERCAL, not C#.
+- **ABSTAIN tracking** — see which statements are currently abstained.
+- **COME FROM visualization** — the debugger marks COME FROM targets and shows where control will be pulled next.
+- **Program I/O** — `WRITE IN` / `READ OUT` interaction appears in the terminal in real time.
 
-### Stepping
+## Requirements
 
-- **Step Over** (F10) advances one INTERCAL statement at a time.
-- **Step Into** (F11) on a `DO (label) NEXT` behaves like Step Over due to the threading model — it executes the NEXT and stops at the next visible statement. Set a breakpoint at the target label as an alternative.
-- **Continue** (F5) runs to the next breakpoint.
+- **Syntax highlighting and snippets** work on their own — just install and open a `.i` file.
+- **Debugging** requires the INTERCAL64 toolchain — the `churn` compiler and the DAP adapter. Download the installer for your platform from the [latest release](https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/latest) and run it.
 
-### Inspecting Variables
+  On Windows, once our winget listing clears Microsoft's review (new publishers take a while to be approved), you'll also be able to install it with:
 
-INTERCAL variables appear as first-class locals in the **Variables** panel:
+  ```
+  winget install PleaseAbstain.INTERCAL64
+  ```
 
-| INTERCAL | Debugger Local | Width |
-|----------|---------------|-------|
-| `.1`     | `dot_1`       | 16-bit |
-| `:1`     | `colon_1`     | 32-bit |
-| `::1`    | `dcolon_1`    | 64-bit |
+  Either way, you'll also need the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0), because churn compiles by transpiling to C# and invoking `csc`. Once the toolchain is installed, this extension finds the debugger automatically — no configuration needed.
 
-Variables are updated after each statement executes. Only variables referenced in the program are shown.
+  _Prefer to build from source? Clone [PLEASE-ABSTAIN/INTERCAL64](https://github.com/PLEASE-ABSTAIN/INTERCAL64) and run `dotnet build intercal64.sln`; set `intercal.projectRoot` if the extension doesn't auto-detect it._
 
-To inspect variables not in the Locals panel, use the **Debug Console**:
+## Getting started
 
-```
-frame.ExecutionContext.GetVarValue(".1")
-```
+1. Install this extension.
+2. Open a `.i` or `.ic64` file — you get syntax highlighting immediately.
+3. To debug, install the toolchain — download the installer from the [latest release](https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/latest) (or, once it's approved, `winget install PleaseAbstain.INTERCAL64`). Then open a program, set a breakpoint, and press **F5**. The 17 lessons in `samples/learn-intercal/` are built for stepping through.
 
-### Known Limitations
+## Extension settings
 
-- **Step Into on NEXT**: The runtime uses a thread-per-NEXT model, so the debugger cannot follow execution into a `DO (label) NEXT` call. Setting a breakpoint at the target label works as an alternative.
-- **INTERCAL expressions**: The Debug Console evaluates C# expressions, not INTERCAL. You cannot evaluate `:1 ~ #65535` directly.
-- **Arrays**: Array variables (`,1`, `;1`) are not shown in the Locals panel. Use the Debug Console to inspect them.
-- **E774**: The build task compiles with `-b` to suppress random compiler bugs during debugging.
+| Setting | Description |
+|---------|-------------|
+| `intercal.projectRoot` | Path to the INTERCAL64 project root (containing `churn/`, `intercal64.dap/`, etc.). Auto-detected from the workspace when empty. |
 
-## Compiling Without the Debugger
+## Learn more
 
-```
-dotnet run --project cringe -- -b samples/collatz.i
-dotnet build ~tmp.csproj
-dotnet run --project ~tmp.csproj
-```
+- **Documentation, tutorials, and papers** — [pleaseabstain.org](https://pleaseabstain.org/vscode/)
+- **Source code** — [github.com/PLEASE-ABSTAIN/INTERCAL64](https://github.com/PLEASE-ABSTAIN/INTERCAL64)
+- **Discord** — [join the server](https://discord.gg/3jQYdBvUwz)
 
-The `-b` flag disables E774 (random compiler bugs).
+## Prior art
 
-## i# System Library
+INTERCAL was created by Don Woods and James Lyon at Princeton in 1972. This work builds on Eric Raymond's C-INTERCAL (`ick`) and Jason Whittington's 2017 compiler `cringe`, and on the wider esoteric-languages community.
 
-Programs can call the i# syslib routines using ASCII-encoded 64-bit labels:
+## License
 
-| Operation | 16-bit | 32-bit | 64-bit |
-|-----------|--------|--------|--------|
-| Add       | `(4702958889031696384)` | `(4702958897554522112)` | `(4702958910472978432)` |
-| Subtract  | `(5569068542595249664)` | `(5569068542595379712)` | `(5569068542595576832)` |
-| Multiply  | `(6073470532629640704)` | `(6073470532629770752)` | `(6073470532629967872)` |
-| Divide    | `(4920558940556964150)` | `(4920558940556964658)` | `(4920558940556965428)` |
-| Modulo    | `(5570746397223760182)` | `(5570746397223760690)` | `(5570746397223761460)` |
-| Random    | `(5927104639891484982)` | `(5927104639891485490)` | `(5927104639891486260)` |
-
-These labels are the ASCII encoding of `ADD16`, `MINUS32`, `DIVIDE64`, etc. packed into 8 bytes.
-
-## INTERCAL Character Names
-
-| Character | Name |
-|-----------|------|
-| `.` | spot |
-| `:` | two-spot |
-| `::` | four-spot |
-| `,` | tail |
-| `;` | hybrid |
-| `;;` | double-hybrid |
-| `#` | mesh (= `\|`-`\|`- = identity) |
-| `=` | uneven bars |
-| `$` | big money (mingle) |
-| `~` | squid (select) |
-| `&` | ampersand / bookworm |
-| `V` | hybrid (or) |
-| `?` | what (xor) |
-| `\|` | stripper pole (rotate) |
-| `-` | monkey bar (flip) |
-| `'` | spark |
-| `"` | rabbit ears |
-| `(` | wax |
-| `)` | wane |
-| `<-` | angle-worm |
-| `[]` | cat box |
+MIT. Published and maintained by [Please Abstain](https://pleaseabstain.org).

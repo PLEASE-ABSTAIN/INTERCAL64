@@ -2,18 +2,18 @@
 
 ## Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [VS Code](https://code.visualstudio.com/)
 - Git (to clone the repo)
 
 ## Step 1: Clone and Build
 
 ```bash
-git clone https://github.com/jawhitti/INTERCAL.git
-cd INTERCAL
+git clone https://github.com/PLEASE-ABSTAIN/INTERCAL64.git
+cd INTERCAL64
 
 # Build compiler, runtime, and syslib into bin/
-dotnet build cringe/cringe.csproj
+dotnet build churn/churn.csproj
 
 # Build the DAP adapter
 dotnet build schrodie.dap/schrodie.dap.csproj
@@ -53,7 +53,7 @@ The extension needs to find the compiler and DAP adapter. It auto-detects the pr
 }
 ```
 
-This should point to the repo root — the directory containing `schrodie.dap/`, `cringe/`, and `samples/`.
+This should point to the repo root — the directory containing `schrodie.dap/`, `churn/`, and `samples/`.
 
 ## Step 4: Set Up Your Working Directory
 

@@ -781,7 +781,7 @@ Raymond, E. S. (1990). C-INTERCAL reference manual. Available at catb.org/esr/in
 
 Stross, C. (2015). Published for the first time: the Princeton INTERCAL compiler’s source code. esoteric.codes.
 
-Whittington, J. (2019). CRINGE: Common Runtime INTERCAL Next-Generation Engine. github.com/jawhitti/INTERCAL.
+Whittington, J. (2017). CRINGE: Common Runtime INTERCAL Next-Generation Engine. github.com/jawhitti/INTERCAL.
 
 Whittington, J. and Claude (Anthropic). (2026a). Optimal graph traversal under adversarial constraints: A bitwise approach to memory-constrained environments. Manuscript in preparation.
 

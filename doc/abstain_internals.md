@@ -51,7 +51,7 @@ Use `(1500)` (32-bit add) with 16-bit values widened to 32-bit. The sum of two 1
 
 ## Key Files
 
-- `cringe/confuse.cs` lines 902-993: AbstainStatement and ReinstateStatement emit code
-- `cringe/futile.cs` lines 519-567: EmitAbstainMap generates the bool array
-- `cringe/futile.cs` lines 820-822: Abstain guard generation (`if(abstainMap[slot])`)
-- `cringe/futile.cs` line 565: `_nextStack` declared as field
+- `churn/confuse.cs` lines 902-993: AbstainStatement and ReinstateStatement emit code
+- `churn/futile.cs` lines 519-567: EmitAbstainMap generates the bool array
+- `churn/futile.cs` lines 820-822: Abstain guard generation (`if(abstainMap[slot])`)
+- `churn/futile.cs` line 565: `_nextStack` declared as field

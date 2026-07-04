@@ -1,17 +1,17 @@
 # Homebrew formula for INTERCAL-64
-# Install: brew tap jawhitti/intercal64 && brew install intercal64
+# Install: brew tap please-abstain/intercal64 && brew install intercal64
 # Usage: churn hello.i && ./hello
 
 class Intercal64 < Formula
   desc "INTERCAL-64 — a 64-bit INTERCAL compiler and runtime"
-  homepage "https://github.com/jawhitti/INTERCAL64"
+  homepage "https://github.com/PLEASE-ABSTAIN/INTERCAL64"
   version "2.0.0"
 
   if Hardware::CPU.arm?
-    url "https://github.com/jawhitti/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-arm64.tar.gz"
+    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-arm64.tar.gz"
     sha256 "PLACEHOLDER_ARM64_SHA256"
   else
-    url "https://github.com/jawhitti/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-x64.tar.gz"
+    url "https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v2.0.0/intercal64-2.0.0-osx-x64.tar.gz"
     sha256 "PLACEHOLDER_X64_SHA256"
   end
 

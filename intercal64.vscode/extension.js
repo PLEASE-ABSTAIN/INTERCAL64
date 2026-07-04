@@ -4,7 +4,7 @@ const fs = require('fs');
 const os = require('os');
 
 // Installed layout: all binaries in one directory
-// Dev layout: intercal64.dap/bin/Debug/net9.0/intercal64-dap[.exe]
+// Dev layout: intercal64.dap/bin/Debug/net10.0/intercal64-dap[.exe]
 //             churn/churn.csproj
 
 function findAdapter() {
@@ -16,7 +16,7 @@ function findAdapter() {
     if (configured) {
         const installed = path.join(configured, exeName);
         if (fs.existsSync(installed)) return installed;
-        const dev = path.join(configured, 'intercal64.dap', 'bin', 'Debug', 'net9.0', exeName);
+        const dev = path.join(configured, 'intercal64.dap', 'bin', 'Debug', 'net10.0', exeName);
         if (fs.existsSync(dev)) return dev;
     }
 
@@ -44,9 +44,9 @@ function findAdapter() {
     }
 
     // 3. Walk up from extension path (dev mode — extension in project tree)
-    let dir = vscode.extensions.getExtension('jawhitti.intercal64')?.extensionPath || '';
+    let dir = vscode.extensions.getExtension('pleaseabstain.intercal64')?.extensionPath || '';
     for (let i = 0; i < 5; i++) {
-        const candidate = path.join(dir, 'intercal64.dap', 'bin', 'Debug', 'net9.0', exeName);
+        const candidate = path.join(dir, 'intercal64.dap', 'bin', 'Debug', 'net10.0', exeName);
         if (fs.existsSync(candidate)) return candidate;
         dir = path.dirname(dir);
     }
@@ -59,7 +59,7 @@ function findAdapter() {
                 const installed = path.join(base, exeName);
                 if (fs.existsSync(installed)) return installed;
                 // Dev layout
-                const dev = path.join(base, 'intercal64.dap', 'bin', 'Debug', 'net9.0', exeName);
+                const dev = path.join(base, 'intercal64.dap', 'bin', 'Debug', 'net10.0', exeName);
                 if (fs.existsSync(dev)) return dev;
             }
         }

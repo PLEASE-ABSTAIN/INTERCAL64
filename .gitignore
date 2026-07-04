@@ -250,3 +250,6 @@ ModelManifest.xml
 # .NET build artifacts from compiled INTERCAL programs
 *.deps.json
 *.runtimeconfig.json
+
+# Packaged VS Code extension (build artifact)
+*.vsix

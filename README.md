@@ -12,7 +12,7 @@ INTERCAL-64 is a near-complete rewrite of CRINGE (Whittington, 2019) with 64-bit
 
 ## Building
 
-Requires .NET 9.0 SDK.
+Requires .NET 10.0 SDK.
 
 ```
 dotnet build intercal64.sln

@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
-PackageIdentifier: jawhitti.INTERCAL64
+PackageIdentifier: PleaseAbstain.INTERCAL64
 PackageVersion: "${VERSION}"
 InstallerType: inno
 Installers:
   - Architecture: x64
-    InstallerUrl: https://github.com/jawhitti/INTERCAL64/releases/download/v${VERSION}/intercal64-${VERSION}-win-x64-setup.exe
+    InstallerUrl: https://github.com/PLEASE-ABSTAIN/INTERCAL64/releases/download/v${VERSION}/intercal64-${VERSION}-win-x64-setup.exe
     InstallerSha256: "${SHA256}"
     InstallerSwitches:
       Silent: /VERYSILENT /SUPPRESSMSGBOXES /NORESTART

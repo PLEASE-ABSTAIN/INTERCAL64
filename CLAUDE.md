@@ -1,6 +1,6 @@
 # INTERCAL-64
 
-This is a .NET 9 INTERCAL compiler with 64-bit extensions, a DAP debugger, and a VS Code extension. The compiler is being renamed from `cringe` to `churn`. File extension is `.ic64` (also accepts `.i`).
+This is a .NET 10 INTERCAL compiler with 64-bit extensions, a DAP debugger, and a VS Code extension. The compiler is `churn`. File extension is `.ic64` (also accepts `.i`).
 
 ## Build
 
@@ -13,7 +13,7 @@ Run the test samples before pushing: `build/test-samples.ps1`
 
 ## Project Structure
 
-- `cringe/` — the compiler (C#). Parses INTERCAL source, emits C# which is compiled to .NET assemblies.
+- `churn/` — the compiler (C#). Parses INTERCAL source, emits C# which is compiled to .NET assemblies.
   - `confuse.cs` — statement AST classes (parser)
   - `futile.cs` — code generation (emits C#, handles COME FROM trapdoors, ABSTAIN guards, DAP hooks)
   - `spew.cs` — compilation context, abstain map, gerund registry

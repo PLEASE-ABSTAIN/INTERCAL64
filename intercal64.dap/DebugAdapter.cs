@@ -155,7 +155,7 @@ public class DebugAdapter
         }
         _programPath = progEl.GetString()!;
 
-        // Optional: path to compiler (default: find cringe in same dir as adapter)
+        // Optional: path to compiler (default: find churn in same dir as adapter)
         if (args.TryGetProperty("compiler", out var compEl))
             _compilerPath = compEl.GetString()!;
         else

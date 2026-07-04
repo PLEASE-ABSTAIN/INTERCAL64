@@ -1,11 +1,11 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
-PackageIdentifier: jawhitti.INTERCAL64
+PackageIdentifier: PleaseAbstain.INTERCAL64
 PackageVersion: "${VERSION}"
 PackageLocale: en-US
-Publisher: jawhitti
-PublisherUrl: https://github.com/jawhitti
+Publisher: Please Abstain
+PublisherUrl: https://github.com/PLEASE-ABSTAIN
 PackageName: INTERCAL-64
-PackageUrl: https://github.com/jawhitti/INTERCAL64
+PackageUrl: https://github.com/PLEASE-ABSTAIN/INTERCAL64
 License: MIT
 ShortDescription: "INTERCAL-64: a 64-bit INTERCAL compiler and runtime"
 Description: |-

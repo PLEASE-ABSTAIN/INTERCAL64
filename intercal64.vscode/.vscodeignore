@@ -1,0 +1,4 @@
+# Dev cruft — keep it out of the published VSIX
+**/.vscode/**
+*.vsix
+icon-crab.png

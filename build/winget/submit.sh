@@ -7,9 +7,15 @@ set -e
 
 VERSION="${1:?Usage: submit.sh <version-tag>}"
 VERSION_NUM="${VERSION#v}"  # strip leading v
-PKG_ID="jawhitti.INTERCAL64"
-REPO="jawhitti/INTERCAL64"
+PKG_ID="PleaseAbstain.INTERCAL64"
+REPO="PLEASE-ABSTAIN/INTERCAL64"
 WINGET_REPO="microsoft/winget-pkgs"
+
+# winget-pkgs layout: manifests/<letter>/<Publisher>/<Package>/<Version>/
+MANIFEST_SUBPATH="manifests/p/PleaseAbstain/INTERCAL64/$VERSION_NUM"
+
+# Fork owner = whoever is authenticated with gh (their personal fork of winget-pkgs)
+FORK_OWNER=$(gh api user -q .login)
 
 ASSET_URL="https://github.com/$REPO/releases/download/$VERSION/intercal64-$VERSION_NUM-win-x64-setup.exe"
 
@@ -24,7 +30,7 @@ SHA256=$(sha256sum "$INSTALLER" | cut -d' ' -f1 | tr '[:lower:]' '[:upper:]')
 echo "SHA256: $SHA256"
 
 # 2. Generate manifests
-MANIFEST_DIR="$TMPDIR/manifests/j/$PKG_ID/$VERSION_NUM"
+MANIFEST_DIR="$TMPDIR/$MANIFEST_SUBPATH"
 mkdir -p "$MANIFEST_DIR"
 
 cat > "$MANIFEST_DIR/$PKG_ID.yaml" << EOF
@@ -41,8 +47,8 @@ cat > "$MANIFEST_DIR/$PKG_ID.locale.en-US.yaml" << EOF
 PackageIdentifier: $PKG_ID
 PackageVersion: $VERSION_NUM
 PackageLocale: en-US
-Publisher: jawhitti
-PublisherUrl: https://github.com/jawhitti
+Publisher: Please Abstain
+PublisherUrl: https://github.com/PLEASE-ABSTAIN
 PackageName: INTERCAL-64
 PackageUrl: https://github.com/$REPO
 License: MIT
@@ -83,19 +89,19 @@ ls -la "$MANIFEST_DIR"
 echo "--- Submitting to $WINGET_REPO ---"
 gh repo fork "$WINGET_REPO" --clone=false 2>/dev/null || true
 
-FORK="jawhitti/winget-pkgs"
+FORK="$FORK_OWNER/winget-pkgs"
 BRANCH="$PKG_ID-$VERSION_NUM"
 
 # Clone sparse (just enough to push the manifest)
 CLONE_DIR="$TMPDIR/winget-pkgs"
 gh repo clone "$FORK" "$CLONE_DIR" -- --depth 1 --sparse
 cd "$CLONE_DIR"
-git sparse-checkout set "manifests/j/$PKG_ID"
+git sparse-checkout set "manifests/p/PleaseAbstain/INTERCAL64"
 git checkout -b "$BRANCH"
 
 # Copy manifests
-mkdir -p "manifests/j/$PKG_ID/$VERSION_NUM"
-cp "$MANIFEST_DIR"/* "manifests/j/$PKG_ID/$VERSION_NUM/"
+mkdir -p "$MANIFEST_SUBPATH"
+cp "$MANIFEST_DIR"/* "$MANIFEST_SUBPATH/"
 
 git add .
 git commit -m "Add $PKG_ID version $VERSION_NUM"
@@ -104,13 +110,13 @@ git push origin "$BRANCH"
 # Open PR
 gh pr create \
     --repo "$WINGET_REPO" \
-    --head "jawhitti:$BRANCH" \
+    --head "$FORK_OWNER:$BRANCH" \
     --title "Add $PKG_ID version $VERSION_NUM" \
     --body "## Package: $PKG_ID v$VERSION_NUM
 
 - Installer: $ASSET_URL
 - SHA256: $SHA256
-- Type: zip/portable (churn.exe, intercal64-dap.exe)"
+- Type: Inno Setup (churn.exe, intercal64-dap.exe)"
 
 echo ""
 echo "=== Done! PR submitted to $WINGET_REPO ==="

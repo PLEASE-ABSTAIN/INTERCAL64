@@ -89,8 +89,8 @@ The following remain true and ARE problems:
 
 ## Key Files
 
-- `cringe/confuse.cs` lines 285-293: NonsenseStatement creation
-- `cringe/futile.cs` lines 519-567: EmitAbstainMap
-- `cringe/futile.cs` lines 820-822, 878-881: Abstain guard open/close
-- `cringe/futile.cs` lines 852-855: Debug cache reload (inside guard, debugger-only)
-- `cringe/futile.cs` lines 932-938: Skip label placement
+- `churn/confuse.cs` lines 285-293: NonsenseStatement creation
+- `churn/futile.cs` lines 519-567: EmitAbstainMap
+- `churn/futile.cs` lines 820-822, 878-881: Abstain guard open/close
+- `churn/futile.cs` lines 852-855: Debug cache reload (inside guard, debugger-only)
+- `churn/futile.cs` lines 932-938: Skip label placement

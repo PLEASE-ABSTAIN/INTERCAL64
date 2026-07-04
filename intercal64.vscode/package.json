@@ -1,9 +1,26 @@
 {
   "name": "intercal64",
-  "displayName": "INTERCAL-64",
-  "description": "Syntax highlighting and debugger for INTERCAL-64.",
+  "displayName": "INTERCAL64",
+  "description": "Base language support for INTERCAL and INTERCAL64",
+  "license": "MIT",
+  "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PLEASE-ABSTAIN/INTERCAL64.git"
+  },
+  "homepage": "https://github.com/PLEASE-ABSTAIN/INTERCAL64#readme",
+  "bugs": {
+    "url": "https://github.com/PLEASE-ABSTAIN/INTERCAL64/issues"
+  },
+  "keywords": [
+    "intercal",
+    "intercal-64",
+    "esolang",
+    "esoteric",
+    "debugger"
+  ],
   "version": "2.0.0",
-  "publisher": "jawhitti",
+  "publisher": "pleaseabstain",
   "engines": {
     "vscode": "^1.75.0"
   },
