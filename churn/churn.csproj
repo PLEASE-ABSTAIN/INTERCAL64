@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>churn</AssemblyName>
     <RootNamespace>intercal</RootNamespace>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Product>churn</Product>
     <Description>churn — the INTERCAL-64 compiler</Description>
     <Copyright>Authorship disclaimed by Jason Whittington 2026. All rights reserved.</Copyright>
