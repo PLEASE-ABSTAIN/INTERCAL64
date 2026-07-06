@@ -1,4 +1,4 @@
-# Warnsdorff's Knight's Tour in churn: Implementation of a Classical Algorithm in an Intentionally Obfuscated Language
+# Warnsdorff's Knight's Tour in INTERCAL64: Implementation of a Classical Algorithm in an Intentionally Obfuscated Language
 
 **Jason Whittington and Claude (Anthropic)**
 
