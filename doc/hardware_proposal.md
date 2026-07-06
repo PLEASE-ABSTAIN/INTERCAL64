@@ -20,7 +20,7 @@ The INTERCAL instruction set, while designed as a parody in 1972, contains opera
 
 An INTERCAL processor would accidentally be a competent bit-manipulation coprocessor.
 
-Performance analysis of the SCHRODIE software implementation shows that the bottleneck is not algorithmic complexity but call dispatch overhead — each arithmetic operation requires hundreds of cross-assembly method invocations through a .NET state machine. Native hardware execution would eliminate this overhead entirely.
+Performance analysis of the churn software implementation shows that the bottleneck is not algorithmic complexity but call dispatch overhead — each arithmetic operation requires hundreds of cross-assembly method invocations through a .NET state machine. Native hardware execution would eliminate this overhead entirely.
 
 ## 3. Architecture
 
@@ -49,20 +49,20 @@ Input B:  b15 b14 b13 ... b1 b0
 Output:   a15 b15 a14 b14 ... a1 b1 a0 b0
 ```
 
-**Mingle (32-bit → 64-bit):** Same pattern at double width. For the SCHRODIE dialect's 64-bit support.
+**Mingle (32-bit → 64-bit):** Same pattern at double width. For the churn dialect's 64-bit support.
 
 **Select (up to 64-bit):** Extract bits where mask has ones, pack right-justified. This requires a priority encoder and barrel shifter — the most complex unit, approximately 2,000-3,000 gates for 32-bit.
 
 **Unary AND/OR/XOR (16-bit or 32-bit):** Apply the boolean operation to each adjacent pair of bits. Result is half the width of the input. Single gate per output bit — 16 AND gates for 32-bit unary AND.
 
-**Estimated total ALU area:** Under 10,000 gates for the full 32-bit ALU. Under 25,000 gates for 64-bit SCHRODIE support.
+**Estimated total ALU area:** Under 10,000 gates for the full 32-bit ALU. Under 25,000 gates for 64-bit churn support.
 
 ### 3.3 Register File
 
 INTERCAL defines variable types:
 - `.N` — 16-bit (spot), N = 1 to 65535
 - `:N` — 32-bit (two-spot), N = 1 to 65535
-- `::N` — 64-bit (four-spot, SCHRODIE extension), N = 1 to 65535
+- `::N` — 64-bit (four-spot, churn extension), N = 1 to 65535
 
 The full address space (65535 variables × 3 types) is impractical in hardware registers. Real INTERCAL programs use at most 30-50 variables.
 
@@ -205,7 +205,7 @@ For accessibility, the design could also target common FPGA development boards (
 
 ## 6. Software Toolchain
 
-The SCHRODIE compiler currently targets .NET IL. A new backend would emit INTERCAL machine code (the bytecode defined in Section 3.8).
+The churn compiler currently targets .NET IL. A new backend would emit INTERCAL machine code (the bytecode defined in Section 3.8).
 
 **Approach:**
 - The compiler's frontend (tokenizer, parser, AST) is reused unchanged
@@ -222,7 +222,7 @@ The assembler could also accept hand-written INTERCAL assembly for testing and b
 
 ### 7.1 Simulation
 
-Before any hardware build, the full design would be simulated in Verilator or Icarus Verilog. The test suite: the existing SCHRODIE unit tests (260+ tests), compiled to bytecode and run on the simulated processor. Every test must produce identical output to the software implementation.
+Before any hardware build, the full design would be simulated in Verilator or Icarus Verilog. The test suite: the existing churn unit tests (260+ tests), compiled to bytecode and run on the simulated processor. Every test must produce identical output to the software implementation.
 
 ### 7.2 Reference Programs
 
@@ -238,7 +238,7 @@ Benchmark: DIVIDE32 (1,000,000 ÷ 7). The software implementation takes ~7 secon
 
 ## 8. Quantum Extension (Stretch Goal)
 
-The SCHRODIE dialect's quantum features (cat boxes, ENTANGLE, thorn guards) could be implemented using a hardware random number generator (ring oscillator or thermal noise source) feeding a "quantum registry" state machine. Entangled groups would be tracked in a small table; collapse would select a survivor uniformly at random.
+The churn dialect's quantum features (cat boxes, ENTANGLE, thorn guards) could be implemented using a hardware random number generator (ring oscillator or thermal noise source) feeding a "quantum registry" state machine. Entangled groups would be tracked in a small table; collapse would select a survivor uniformly at random.
 
 This would make it the world's first quantum INTERCAL processor, with genuine hardware randomness rather than pseudorandom software simulation. The fact that it has nothing to do with actual quantum computing is, as always, beside the point.
 

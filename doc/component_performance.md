@@ -2,11 +2,11 @@
 
 ## Summary
 
-An experiment to measure the overhead of cross-assembly component calls in the SCHRODIE compiler produced a counterintuitive result: **compiling the system library as a separate assembly is faster than compiling everything into one module.** The cross-assembly call overhead is more than offset by the cost of a larger goto dispatch table in the monolithic build.
+An experiment to measure the overhead of cross-assembly component calls in the churn compiler produced a counterintuitive result: **compiling the system library as a separate assembly is faster than compiling everything into one module.** The cross-assembly call overhead is more than offset by the cost of a larger goto dispatch table in the monolithic build.
 
 ## Background
 
-The SCHRODIE compiler uses a goto-based state machine for INTERCAL execution. Each labeled statement becomes a case in a switch statement. NEXT calls push return labels onto a stack, and RESUME pops them and dispatches via the switch. Cross-assembly calls (e.g., user code calling syslib routines) use .NET method invocation through a `ComponentCall` wrapper, which creates a new `ExecutionFrame` and enters the target assembly's `Eval` method.
+The churn compiler uses a goto-based state machine for INTERCAL execution. Each labeled statement becomes a case in a switch statement. NEXT calls push return labels onto a stack, and RESUME pops them and dispatches via the switch. Cross-assembly calls (e.g., user code calling syslib routines) use .NET method invocation through a `ComponentCall` wrapper, which creates a new `ExecutionFrame` and enters the target assembly's `Eval` method.
 
 The question: how much overhead does the cross-assembly call boundary add, and would eliminating it by compiling everything into one module be faster?
 
@@ -31,7 +31,7 @@ The monolithic build is **39% slower** than the cross-assembly build.
 
 ## Analysis
 
-The SCHRODIE compiler generates a single `Eval` method containing a goto-based state machine. Every labeled statement in the program becomes:
+The churn compiler generates a single `Eval` method containing a goto-based state machine. Every labeled statement in the program becomes:
 
 1. A `case` in the entry dispatch switch
 2. A labeled goto target
@@ -89,7 +89,7 @@ When these RESUME operations share a stack with the calling program, they can po
 
 The original C-INTERCAL syslib was designed for a single-process, single-stack model where the caller's NEXT entries and the library's NEXT entries *were* supposed to share a stack. The RESUME depths in the syslib (e.g., `RESUME #2` to pop the library's internal frame plus the caller's NEXT) were carefully balanced for that model.
 
-The SCHRODIE compiler's cross-assembly boundary accidentally fixed this: each component gets its own `_nextStack`, so the syslib's `RESUME #2` only pops entries from the syslib's own stack. The depth arithmetic that was designed for a shared stack becomes harmless — the extra pop just hits the bottom of an isolated stack and exits cleanly via `frame.Call.NextStackDepth`.
+The churn compiler's cross-assembly boundary accidentally fixed this: each component gets its own `_nextStack`, so the syslib's `RESUME #2` only pops entries from the syslib's own stack. The depth arithmetic that was designed for a shared stack becomes harmless — the extra pop just hits the bottom of an isolated stack and exits cleanly via `frame.Call.NextStackDepth`.
 
 Simple programs (like `test_add.i`) may work monolithically because their shallow, sequential call patterns happen to keep the stack balanced. Complex programs with nested loops and repeated syslib calls (like Hilbert geo) accumulate stack drift until a RESUME eats a wrong label.
 

@@ -2,7 +2,7 @@
 	DO NOTE
 	DO NOTE Same goal as lemma1.i: subroutine adds 1 five times.
 	DO NOTE COME FROM loop, R survives, RESUME #1 returns to caller.
-	DO NOTE Confirmed on both SCHRODIE and C-INTERCAL.
+	DO NOTE Confirmed on both churn and C-INTERCAL.
 	DO NOTE
 	DO NOTE Expected output: V
 

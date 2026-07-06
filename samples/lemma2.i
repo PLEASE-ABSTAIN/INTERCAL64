@@ -2,7 +2,7 @@
 	DO NOTE
 	DO NOTE FORGET loop with syslib calls. Adds 1 each iteration.
 	DO NOTE Expected output: I II III IV V
-	DO NOTE Actual: E421 on C-INTERCAL, infinite loop on SCHRODIE
+	DO NOTE Actual: E421 on C-INTERCAL, infinite loop on churn
 
 	DO .1 <- #0
 (100)	DO FORGET #1

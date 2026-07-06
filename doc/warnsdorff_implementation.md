@@ -1,16 +1,16 @@
-# Warnsdorff's Knight's Tour in SCHRODIE: Implementation of a Classical Algorithm in an Intentionally Obfuscated Language
+# Warnsdorff's Knight's Tour in churn: Implementation of a Classical Algorithm in an Intentionally Obfuscated Language
 
 **Jason Whittington and Claude (Anthropic)**
 
 ## Abstract
 
-We present the first known implementation of Warnsdorff's knight's tour algorithm in INTERCAL (specifically, the SCHRODIE dialect), a programming language deliberately designed to be incomprehensible. The implementation required building a complete arithmetic library from scratch — including 64-bit addition, population count, and bit manipulation — due to fundamental defects in the language's standard library. We describe the algorithm, the 64-bit bitboard representation, the arithmetic building blocks, and the control flow challenges imposed by INTERCAL's unique execution model. The resulting program successfully computes a complete knight's tour of a standard 8×8 chessboard, producing all 64 squares in a valid sequence. We employ the Arnd Roth amendment to Warnsdorff's rule for tiebreaking, using a center-distance heuristic to prefer squares farther from the board center. To our knowledge, this is the most complex algorithmic program ever written in INTERCAL.
+We present the first known implementation of Warnsdorff's knight's tour algorithm in INTERCAL (specifically, the churn dialect), a programming language deliberately designed to be incomprehensible. The implementation required building a complete arithmetic library from scratch — including 64-bit addition, population count, and bit manipulation — due to fundamental defects in the language's standard library. We describe the algorithm, the 64-bit bitboard representation, the arithmetic building blocks, and the control flow challenges imposed by INTERCAL's unique execution model. The resulting program successfully computes a complete knight's tour of a standard 8×8 chessboard, producing all 64 squares in a valid sequence. We employ the Arnd Roth amendment to Warnsdorff's rule for tiebreaking, using a center-distance heuristic to prefer squares farther from the board center. To our knowledge, this is the most complex algorithmic program ever written in INTERCAL.
 
 ## 1. Introduction
 
 The Knight's Tour is a classical combinatorial problem: find a sequence of moves for a chess knight such that every square on the board is visited exactly once. While the problem has been studied since the 9th century, efficient heuristic solutions have been known since Warnsdorff's 1823 publication of a greedy rule: at each step, move to the square from which the knight will have the fewest onward moves.
 
-INTERCAL (Compiler Language With No Pronounceable Acronym) was created in 1972 by Don Woods and James Lyon as a parody of programming languages. It features no conventional control flow (no `if`, `while`, or `for`), no arithmetic operators beyond interleave and select, a politeness checker that rejects programs deemed insufficiently courteous, and error messages such as "VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE." SCHRODIE is a modern dialect extending INTERCAL with 64-bit integers, quantum cat box variables, and Unicode syntax, while maintaining backward compatibility with the original language's hostility toward the programmer.
+INTERCAL (Compiler Language With No Pronounceable Acronym) was created in 1972 by Don Woods and James Lyon as a parody of programming languages. It features no conventional control flow (no `if`, `while`, or `for`), no arithmetic operators beyond interleave and select, a politeness checker that rejects programs deemed insufficiently courteous, and error messages such as "VARIABLES MAY NOT BE STORED IN WEST HYPERSPACE." churn is a modern dialect extending INTERCAL with 64-bit integers, quantum cat box variables, and Unicode syntax, while maintaining backward compatibility with the original language's hostility toward the programmer.
 
 This paper describes the challenges encountered in implementing a non-trivial algorithm in this environment, the workarounds developed, and the design decisions that made the implementation possible.
 
@@ -66,7 +66,7 @@ The use of lookup tables is essential. INTERCAL provides no conventional arithme
 
 ## 4. Arithmetic Building Blocks
 
-INTERCAL's standard library provides 16-bit addition, subtraction, and multiplication, along with 32-bit equivalents. The SCHRODIE dialect extends the language with 64-bit integer types (`::` fourspot variables) and 64-bit constants (`####`). However, the standard library's 64-bit addition routine (`ADD64`) contains a critical defect: it performs the internal computation correctly using 16-bit partial sums but never assembles the result into the output variable. This bug — which causes the routine to silently produce no output — necessitated reimplementation from first principles.
+INTERCAL's standard library provides 16-bit addition, subtraction, and multiplication, along with 32-bit equivalents. The churn dialect extends the language with 64-bit integer types (`::` fourspot variables) and 64-bit constants (`####`). However, the standard library's 64-bit addition routine (`ADD64`) contains a critical defect: it performs the internal computation correctly using 16-bit partial sums but never assembles the result into the output variable. This bug — which causes the routine to silently produce no output — necessitated reimplementation from first principles.
 
 ### 4.1 ADD64
 
@@ -288,7 +288,7 @@ The complete program, including all arithmetic subroutines and lookup tables, to
 
 ## Acknowledgments
 
-The center-distance tiebreaking amendment is due to Arnd Roth of the Max Planck Institute for Medical Research, Heidelberg, as documented by Gunno Törnberg. The original INTERCAL standard library routines for 16-bit arithmetic are derived from the C-INTERCAL distribution by Eric S. Raymond and others. The SCHRODIE compiler and runtime were developed by Jason Whittington. The arithmetic library, POPCOUNT algorithm, and main program were developed collaboratively between Jason Whittington and Claude (Anthropic).
+The center-distance tiebreaking amendment is due to Arnd Roth of the Max Planck Institute for Medical Research, Heidelberg, as documented by Gunno Törnberg. The original INTERCAL standard library routines for 16-bit arithmetic are derived from the C-INTERCAL distribution by Eric S. Raymond and others. The churn compiler and runtime were developed by Jason Whittington. The arithmetic library, POPCOUNT algorithm, and main program were developed collaboratively between Jason Whittington and Claude (Anthropic).
 
 ## References
 

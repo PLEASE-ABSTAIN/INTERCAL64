@@ -362,8 +362,8 @@ The tokenizer does not distinguish between labels in executable statements and p
 | Program | Description | Significance |
 |---------|-------------|--------------|
 | `lemma1.i` | Lemma 1 bug reproducer | Demonstrates NEXT stack corruption: FORGET in a callable subroutine destroys the caller's return address. |
-| `lemma1_comefrom.i` | Lemma 1 fix | Same algorithm using COME FROM loop — return address preserved. Confirmed on both SCHRODIE and C-INTERCAL. |
-| `lemma2.i` | Lemma 2 bug reproducer | Loop with syslib calls: E421 on C-INTERCAL, infinite loop on SCHRODIE. Proves complex loops impossible with NEXT/RESUME alone. |
+| `lemma1_comefrom.i` | Lemma 1 fix | Same algorithm using COME FROM loop — return address preserved. Confirmed on both churn and C-INTERCAL. |
+| `lemma2.i` | Lemma 2 bug reproducer | Loop with syslib calls: E421 on C-INTERCAL, infinite loop on churn. Proves complex loops impossible with NEXT/RESUME alone. |
 | `lemma2_comefrom.i` | Lemma 2 fix | Double-NEXT trampoline in a COME FROM loop. Works on both compilers. |
 | `comefrom_bug.i` | Minimal COME FROM test | Isolated test case for COME FROM interaction with the NEXT stack. |
 | `stable_marriage.i` | Gale-Shapley stable matching (n=5) | Most complex algorithm attempted. COME FROM loops with nested trampoline branching. Demonstrates that nontrivial algorithms require COME FROM. |

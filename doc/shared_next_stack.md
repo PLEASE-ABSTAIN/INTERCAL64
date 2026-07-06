@@ -15,7 +15,7 @@ The bug was discovered while writing reproducers for "COME FROM Considered Neces
 - `lemma1_comefrom.i` — COME FROM fix for Lemma 1. Expected to work.
 - `lemma2_comefrom.i` — COME FROM fix for Lemma 2. Expected to work.
 
-The broken programs correctly failed on both compilers. The Lemma 2 fix worked on both. But the Lemma 1 fix — COME FROM loop inside a callable subroutine — worked on C-INTERCAL and hung on SCHRODIE.
+The broken programs correctly failed on both compilers. The Lemma 2 fix worked on both. But the Lemma 1 fix — COME FROM loop inside a callable subroutine — worked on C-INTERCAL and hung on churn.
 
 ## Investigation
 
@@ -24,12 +24,12 @@ The broken programs correctly failed on both compilers. The Lemma 2 fix worked o
 The Lemma 1 COME FROM fix initially crashed on C-INTERCAL with E621. This sent us down a multi-hour investigation where we:
 
 1. Discovered our `RESUME .5` trampoline pattern used `.5 ~ #1` to map `{1,2}` to `{1,0}`
-2. Realized `RESUME #0` is illegal on C-INTERCAL but silently ignored on SCHRODIE
+2. Realized `RESUME #0` is illegal on C-INTERCAL but silently ignored on churn
 3. Discovered that `DO ABSTAIN FROM (target)` abstains the statement, not the COME FROM that references it
 4. Found that our fizzbuzz also crashes on C-INTERCAL for the same reason
 5. Eventually found the beer.i double-NEXT pattern that works on both compilers
 
-After fixing the INTERCAL-level issues (documented in `come_from_findings.md`), Lemma 1 worked on C-INTERCAL but still hung on SCHRODIE. Now we knew it was a compiler bug.
+After fixing the INTERCAL-level issues (documented in `come_from_findings.md`), Lemma 1 worked on C-INTERCAL but still hung on churn. Now we knew it was a compiler bug.
 
 ### Looking at the generated C#
 
@@ -184,7 +184,7 @@ This fix unblocks:
 
 ## Timeline
 
-- **Night 1:** Discovered both lemmas crash on C-INTERCAL. Confirmed COME FROM fixes on C-INTERCAL but Lemma 1 hung on SCHRODIE. Discovered `.5 ~ #1` / RESUME #0 bug. Found beer.i double-NEXT pattern. Documented in `come_from_findings.md`.
+- **Night 1:** Discovered both lemmas crash on C-INTERCAL. Confirmed COME FROM fixes on C-INTERCAL but Lemma 1 hung on churn. Discovered `.5 ~ #1` / RESUME #0 bug. Found beer.i double-NEXT pattern. Documented in `come_from_findings.md`.
 - **Morning 2:** Identified root cause in generated C# — per-component `_nextStack` causing cross-assembly return label mismatch. Implemented shared stack on `ExecutionContext`. Three failed attempts before finding the correct approach (keep sentinel, don't push caller's return label for cross-assembly calls). Clean test run. Merged to `dap-debugger`.
 
 Total: ~4 hours of investigation, ~2 hours of implementation, 3 wrong approaches before the fix.

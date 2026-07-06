@@ -2,7 +2,7 @@
 	DO NOTE
 	DO NOTE Same goal as lemma2.i: count to 5 with syslib calls.
 	DO NOTE COME FROM loop, double-NEXT trampoline, raw zero-test.
-	DO NOTE Confirmed on both SCHRODIE and C-INTERCAL.
+	DO NOTE Confirmed on both churn and C-INTERCAL.
 	DO NOTE
 	DO NOTE Expected output: I II III IV V
 

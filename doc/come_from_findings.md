@@ -2,14 +2,14 @@
 
 ## Summary
 
-Testing the programs from "COME FROM Considered Necessary" on two compilers (SCHRODIE and C-INTERCAL via TIO/JDroid) revealed both language-level impossibilities and a narrow, specific pattern that resolves them. This document records every approach we tried, why most failed, and why exactly one pattern works.
+Testing the programs from "COME FROM Considered Necessary" on two compilers (churn and C-INTERCAL via TIO/JDroid) revealed both language-level impossibilities and a narrow, specific pattern that resolves them. This document records every approach we tried, why most failed, and why exactly one pattern works.
 
 ## Compilers Tested
 
-- **SCHRODIE** (our .NET compiler): cross-assembly and monolithic modes
+- **churn** (our .NET compiler): cross-assembly and monolithic modes
 - **C-INTERCAL** (ESR's reference implementation): via tio.run and JDroid online
 
-C-INTERCAL is the authoritative implementation. Any program that crashes on C-INTERCAL is incorrect, regardless of whether it runs on SCHRODIE.
+C-INTERCAL is the authoritative implementation. Any program that crashes on C-INTERCAL is incorrect, regardless of whether it runs on churn.
 
 ## Part 1: The Broken Programs (INTERCAL-72)
 
@@ -44,7 +44,7 @@ A subroutine `(500)` contains a FORGET-based loop calling syslib `(1000)`. The f
 
 | Compiler | Result |
 |----------|--------|
-| SCHRODIE | Hangs silently, no output |
+| churn | Hangs silently, no output |
 | C-INTERCAL (JDroid) | **E421** — NEXT stack overflow |
 
 ### Lemma 2: FORGET loop with syslib calls (`samples/lemma2.i`)
@@ -72,7 +72,7 @@ A FORGET loop adds 1 per iteration via syslib `(1000)`, printing each value, tar
 
 | Compiler | Result |
 |----------|--------|
-| SCHRODIE | Hangs silently, no output |
+| churn | Hangs silently, no output |
 | C-INTERCAL (JDroid) | **E421** — NEXT stack overflow |
 
 **Note:** Our fizzbuzz implementation uses the same `.5 ~ #1` + `RESUME .5` pattern and also crashes on C-INTERCAL. This pattern is fundamentally broken on strict implementations.
@@ -98,10 +98,10 @@ DO GIVE UP
 
 | Compiler | Result | Root Cause |
 |----------|--------|------------|
-| SCHRODIE | Appears to work | RESUME #0 silently treated as no-op; FORGET on empty stack silently ignored |
+| churn | Appears to work | RESUME #0 silently treated as no-op; FORGET on empty stack silently ignored |
 | C-INTERCAL | **E621** | Two errors: (1) `.5 ~ #1` produces RESUME #0 which is illegal; (2) FORGET at (699) pops from empty stack |
 
-**Why it fails:** The `.5 ~ #1` mapping converts `{1,2}` to `{1,0}`. When the loop should continue (`.5=2`), it becomes RESUME #0. C-INTERCAL correctly rejects RESUME #0. SCHRODIE silently treats it as a no-op — a compiler bug, not correct behavior.
+**Why it fails:** The `.5 ~ #1` mapping converts `{1,2}` to `{1,0}`. When the loop should continue (`.5=2`), it becomes RESUME #0. C-INTERCAL correctly rejects RESUME #0. churn silently treats it as a no-op — a compiler bug, not correct behavior.
 
 **Lesson:** RESUME #0 is undefined/illegal. Never use `.5 ~ #1` to remap the zero-test result.
 
@@ -141,7 +141,7 @@ DO (101) NEXT
 
 | Compiler | Result | Root Cause |
 |----------|--------|------------|
-| SCHRODIE | Appears to work | Same RESUME #0 leniency |
+| churn | Appears to work | Same RESUME #0 leniency |
 | C-INTERCAL | **E621** | Same `.5 ~ #1` → RESUME #0 problem as Attempt 1 |
 
 **Why it fails:** The double-NEXT structure is correct, but `.5 ~ #1` still produces RESUME #0. The wrapper doesn't help if the RESUME depth is wrong.
@@ -168,7 +168,7 @@ DO GIVE UP
 
 | Compiler | Result | Root Cause |
 |----------|--------|------------|
-| SCHRODIE | Hangs | Same as C-INTERCAL |
+| churn | Hangs | Same as C-INTERCAL |
 | C-INTERCAL | Hangs | On the done path (.5=1), RESUME 1 pops R81 and returns inside (80). RESUME #1 then pops R80 (not R_500!) because R80 is on top of the stack. Returns to after DO (80) NEXT = (599). COME FROM fires. Infinite loop. |
 
 **Why it fails:** Inside a callable subroutine, the caller's return address R_500 sits below the double-NEXT entries on the stack. When the done path executes, RESUME 1 pops R81 (inner), leaving the stack as `[R_500, R80]`. RESUME #1 pops the *top* of the stack — R80, not R_500. Execution returns to after `DO (80) NEXT`, which is `(599)`. COME FROM fires again. The subroutine can never return.
@@ -222,7 +222,7 @@ Before finding the full solution, we isolated which components work:
 ```
 
 **Output on C-INTERCAL:** I II III IV V
-**Output on SCHRODIE:** I II III IV V
+**Output on churn:** I II III IV V
 
 ### The Working Pattern: Lemma 1 (COME FROM loop inside callable subroutine)
 
@@ -250,7 +250,7 @@ Before finding the full solution, we isolated which components work:
 ```
 
 **Output on C-INTERCAL:** V
-**Output on SCHRODIE:** Hangs (compiler bug — COME FROM + syslib inside subroutine)
+**Output on churn:** Hangs (compiler bug — COME FROM + syslib inside subroutine)
 
 ## Part 4: The Pattern Explained
 
@@ -286,7 +286,7 @@ The double-NEXT provides exactly the right number of stack entries for both RESU
 
 Both paths land at the correct location with the correct stack state. No stack entries leak.
 
-This pattern was discovered by Matt Dimeo in the 99 Bottles of Beer implementation (beer.i), which uses it for all conditional branches within a COME FROM loop. It is the only conditional branching pattern we found that is correct on both SCHRODIE and C-INTERCAL.
+This pattern was discovered by Matt Dimeo in the 99 Bottles of Beer implementation (beer.i), which uses it for all conditional branches within a COME FROM loop. It is the only conditional branching pattern we found that is correct on both churn and C-INTERCAL.
 
 ### Component 3: Raw zero-test value {1,2} in RESUME
 
@@ -294,7 +294,7 @@ The INTERCAL zero-test expression `"?'.4~.4'$#1"~#3` produces:
 - `1` when `.4` is zero
 - `2` when `.4` is nonzero
 
-This value must be used **directly** in `DO RESUME .5`. The mapping `DO .5 <- .5 ~ #1` that converts `{1,2}` to `{1,0}` is **fatal**: RESUME #0 is undefined behavior. SCHRODIE silently ignores RESUME #0 (a compiler bug). C-INTERCAL correctly throws E621.
+This value must be used **directly** in `DO RESUME .5`. The mapping `DO .5 <- .5 ~ #1` that converts `{1,2}` to `{1,0}` is **fatal**: RESUME #0 is undefined behavior. churn silently ignores RESUME #0 (a compiler bug). C-INTERCAL correctly throws E621.
 
 The semantic alignment is natural:
 - Zero (done) → `.5=1` → RESUME 1 → pop one entry → exit
@@ -318,13 +318,13 @@ This is only needed when the loop is inside a callable subroutine (Lemma 1). Top
 
 Three factors conspired to make this pattern difficult to discover:
 
-1. **SCHRODIE's leniency masked errors.** RESUME #0 and FORGET on empty stack silently succeed on SCHRODIE, making incorrect programs appear to work. Every one of our early "successful" COME FROM fixes was actually broken — we only discovered this when testing on C-INTERCAL.
+1. **churn's leniency masked errors.** RESUME #0 and FORGET on empty stack silently succeed on churn, making incorrect programs appear to work. Every one of our early "successful" COME FROM fixes was actually broken — we only discovered this when testing on C-INTERCAL.
 
 2. **The `.5 ~ #1` idiom is widespread.** Our fizzbuzz, our test programs, and many INTERCAL programs use `DO .5 <- .5 ~ #1` to convert the zero-test from `{1,2}` to `{1,0}` for use in `RESUME .5` as a "skip or don't skip" mechanism. This works on lenient compilers but is fundamentally illegal (RESUME #0). The correct pattern uses `{1,2}` directly with the double-NEXT wrapper.
 
-3. **Stack accounting inside subroutines is non-obvious.** The FORGET #1 in the Lemma 1 fix (Component 4) is required because the double-NEXT wrapper leaves R_outer on the stack in the done path. This is invisible in top-level loops (where GIVE UP ends the program regardless) and only manifests when a subroutine needs to RESUME back to its caller. We discovered this after the program hung on both SCHRODIE and C-INTERCAL — it was the last bug fixed.
+3. **Stack accounting inside subroutines is non-obvious.** The FORGET #1 in the Lemma 1 fix (Component 4) is required because the double-NEXT wrapper leaves R_outer on the stack in the done path. This is invisible in top-level loops (where GIVE UP ends the program regardless) and only manifests when a subroutine needs to RESUME back to its caller. We discovered this after the program hung on both churn and C-INTERCAL — it was the last bug fixed.
 
-## SCHRODIE Compiler Bugs Found
+## churn Compiler Bugs Found
 
 ### Bug 1: RESUME #0 treated as no-op
 
@@ -343,7 +343,7 @@ Three factors conspired to make this pattern difficult to discover:
 
 ### Bug 3: COME FROM + syslib inside callable subroutine hangs
 
-**Symptom:** Lemma 1 COME FROM fix works on C-INTERCAL but hangs on SCHRODIE
+**Symptom:** Lemma 1 COME FROM fix works on C-INTERCAL but hangs on churn
 **Scope:** Only affects COME FROM loops that call syslib from inside a callable subroutine
 **Status:** Not yet investigated; may be related to cross-assembly COME FROM interaction
 
@@ -353,7 +353,7 @@ Our fizzbuzz implementation (`samples/fizzbuzz.i`) uses the `.5 ~ #1` pattern, p
 
 ## Final Results
 
-| Program | SCHRODIE | C-INTERCAL (TIO) |
+| Program | churn | C-INTERCAL (TIO) |
 |---------|----------|-------------------|
 | Lemma 1 broken (`lemma1.i`) | Hangs | E421 |
 | Lemma 2 broken (`lemma2.i`) | Hangs | E421 |
