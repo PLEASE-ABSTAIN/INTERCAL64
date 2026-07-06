@@ -111,11 +111,11 @@ The 203-case RESUME dispatch switch means a corrupted pop can jump to any `_ret_
 
 ```bash
 # Cross-assembly (faster)
-schrodie.exe test.schrodie divide32.schrodie -b -r:syslib64.dll -noplease
+churn test.schrodie divide32.schrodie -b -r:syslib64.dll -noplease
 time dotnet test.dll
 
 # Monolithic (slower)
-schrodie.exe test.schrodie divide32.schrodie syslib64.schrodie -b -noplease
+churn test.schrodie divide32.schrodie syslib64.schrodie -b -noplease
 time dotnet test.dll
 ```
 

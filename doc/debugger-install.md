@@ -97,7 +97,7 @@ VS Code will prompt you to create a launch configuration. The default works for 
 
 | Property | Description |
 |----------|-------------|
-| `compiler` | Path to `schrodie.exe` compiler (auto-detected from `bin/` if not set) |
+| `compiler` | Path to `churn` compiler (auto-detected from `bin/` if not set) |
 | `syslib` | Path to `syslib64.dll` (auto-detected if not set) |
 
 ## What Works

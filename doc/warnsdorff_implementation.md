@@ -215,7 +215,7 @@ The complete program consists of eight source files:
 Compilation order matters: data tables must appear first (their initialization code runs at program start), followed by the main program, followed by subroutine libraries (reached only via `NEXT` calls, never by sequential execution).
 
 ```
-schrodie.exe knight_attacks.i clear_mask.i center_dist.i \
+churn knight_attacks.i clear_mask.i center_dist.i \
   warnsdorff.schrodie lowbit.schrodie popcount.schrodie \
   bit_to_index.schrodie my_add64.schrodie \
   -b -r:syslib64.dll -noplease
