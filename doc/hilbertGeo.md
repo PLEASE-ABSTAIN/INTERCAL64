@@ -1,8 +1,8 @@
-# Hilbert Curve Geographic Indexing in SCHRODIE
+# Hilbert Curve Geographic Indexing in INTERCAL64
 
 ## Overview
 
-An implementation of Hilbert curve geographic indexing in SCHRODIE, demonstrating that INTERCAL's mingle operator (`$`) is the standard Morton code (Z-order curve) generation algorithm used in modern geospatial databases. The Hilbert curve is a refinement of Morton coding with superior locality properties, implemented as a post-processing state machine on top of the native mingle output.
+An implementation of Hilbert curve geographic indexing in INTERCAL64, demonstrating that INTERCAL's mingle operator (`$`) is the standard Morton code (Z-order curve) generation algorithm used in modern geospatial databases. The Hilbert curve is a refinement of Morton coding with superior locality properties, implemented as a post-processing state machine on top of the native mingle output.
 
 The program encodes 10 European cities as fixed-point lat/lon, computes Morton codes via mingle, converts to Hilbert indices via a 32-iteration state machine, sorts by Hilbert index, and performs a geographic range query that dynamically identifies cities within 500km of London.
 
